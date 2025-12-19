@@ -22,12 +22,15 @@ add_executable(${PROJECT_NAME}
     ${APP_HEADERS}
         include/App.h
         src/App.cpp
+        src/ImGuiHandler.cpp
+        include/ImGuiHandler.h
 )
 
 # Include your own header directory
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        imgui
 )
 
 # ============================================
@@ -36,6 +39,7 @@ target_include_directories(${PROJECT_NAME}
 # glfw_target is defined in the root CMakeLists.txt (system or FetchContent)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+        imgui
         glfw_target
         glad_loader
         glm::glm
