@@ -91,9 +91,6 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     VAO1->Unbind();   // Unbind VAO, but it remembers the EBO binding
     std::cout << "VAO, VBO, EBO setup complete" << '\n';
 
-    // Wireframe
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     // Returns true in the isValid() function so everything went fine
     initialized = true;
 }

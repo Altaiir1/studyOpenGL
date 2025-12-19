@@ -6,6 +6,9 @@
 
 class UI
 {
+private:
+    bool setWireframe = false;
+
 public:
     void render();
 };
