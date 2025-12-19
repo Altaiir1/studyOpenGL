@@ -3,5 +3,6 @@ cmake-build-*/
 .vs/
 .vscode/
 *.user
+.idea/
 
 .DS_Store
