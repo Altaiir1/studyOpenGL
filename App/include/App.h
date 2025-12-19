@@ -41,4 +41,5 @@ public:
 
     void run();
     bool isValid() const;
+    static void Clear() ;
 };

@@ -121,8 +121,7 @@ void App::run()
     {
         processInput();
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        Clear();
 
         shader->Activate();
         VAO1->Bind();
@@ -131,15 +130,12 @@ void App::run()
         //glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        // Start ImGui frame
+        // IMGUI
         imgui->beginFrame();
 
-        // ImGui UI
         ui.render();
-
         ImGui::ShowDemoWindow();
 
-        // Render ImGui
         imgui->endFrame();
 
         glfwSwapBuffers(window);
@@ -152,6 +148,11 @@ void App::run()
 bool App::isValid() const
 {
     return initialized;
+}
+
+void App::Clear() {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void App::framebuffer_size_callback(GLFWwindow *window, int width, int height)
