@@ -28,7 +28,9 @@ private:
     UI ui;
     std::unique_ptr<Shader> shader;
     std::unique_ptr<VAO> VAO1;
+    std::unique_ptr<VAO> VAO2;
     std::unique_ptr<VBO> VBO1;
+    std::unique_ptr<VBO> VBO2;
     std::unique_ptr<EBO> EBO1;
 
     static void framebuffer_size_callback(GLFWwindow *window, int width,
