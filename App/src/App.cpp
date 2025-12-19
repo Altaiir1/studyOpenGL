@@ -10,6 +10,13 @@
 #include "App.h"
 #include "UI.h"
 
+const char *vertexShaderSource = "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "}\0";
+
 // initialized starts at false. Until the initialized is set to true
 // any crash will return the initial false boolean.
 App::App() : window(nullptr), initialized(false), imgui(nullptr)
@@ -54,13 +61,17 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
+         0.0f,  0.5f, 0.0f
     };
 
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
 
     // Returns true in the isValid() function so everything went fine
     initialized = true;
