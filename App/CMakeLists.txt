@@ -20,12 +20,13 @@ file(GLOB_RECURSE APP_HEADERS
 add_executable(${PROJECT_NAME}
     ${APP_SOURCES}
     ${APP_HEADERS}
-        include/App.h
         src/App.cpp
         src/ImGuiHandler.cpp
-        include/ImGuiHandler.h
         src/UI.cpp
-        include/UI.h
+        src/Shader.cpp
+        src/VAO.cpp
+        src/VBO.cpp
+        src/EBO.cpp
 )
 
 # Include your own header directory
