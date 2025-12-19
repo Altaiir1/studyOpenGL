@@ -17,6 +17,13 @@ const char *vertexShaderSource = "#version 330 core\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
+const char *fragmentShaderSource = "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "}\0";
+
 // initialized starts at false. Until the initialized is set to true
 // any crash will return the initial false boolean.
 App::App() : window(nullptr), initialized(false), imgui(nullptr)
@@ -72,6 +79,10 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
+
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
 
     // Returns true in the isValid() function so everything went fine
     initialized = true;
