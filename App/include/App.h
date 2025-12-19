@@ -27,6 +27,7 @@ private:
     std::unique_ptr<ImGuiHandler> imgui;
     UI ui;
     std::unique_ptr<Shader> shader;
+    std::unique_ptr<Shader> shader2;
     std::unique_ptr<VAO> VAO1;
     std::unique_ptr<VAO> VAO2;
     std::unique_ptr<VBO> VBO1;

@@ -56,7 +56,8 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     // Initialize shader after OpenGL context is ready
     try {
         shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
-        std::cout << "Shader loaded successfully" << '\n';
+        shader2 = std::make_unique<Shader>("shaders/default.vert", "shaders/second.frag");
+        std::cout << "Shader 1 & 2 loaded successfully" << '\n';
     } catch (const std::exception& e) {
         std::cerr << "Failed to load shader: " << e.what() << '\n';
         return;
@@ -127,10 +128,10 @@ void App::run()
         Clear();
 
         shader->Activate();
-
         VAO1->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        shader2->Activate();
         VAO2->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
