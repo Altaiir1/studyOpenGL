@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #include "ImGuiHandler.h"
+#include "UI.h"
 
 class App
 {
@@ -18,6 +19,7 @@ private:
     // with nullptr first and then imgui -> therefore imgui can't initialize window
     // Can't pass nullptr to a non-pointer initialization
     std::unique_ptr<ImGuiHandler> imgui;
+    UI ui;
 
     static void framebuffer_size_callback(GLFWwindow *window, int width,
                                           int height);

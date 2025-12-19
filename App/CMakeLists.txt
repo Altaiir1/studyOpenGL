@@ -24,6 +24,8 @@ add_executable(${PROJECT_NAME}
         src/App.cpp
         src/ImGuiHandler.cpp
         include/ImGuiHandler.h
+        src/UI.cpp
+        include/UI.h
 )
 
 # Include your own header directory
