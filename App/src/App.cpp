@@ -7,9 +7,11 @@
 
 #include "App.h"
 
+#include "imgui.h"
+
 // initialized starts at false. Until the initialized is set to true
 // any crash will return the initial false boolean.
-App::App() : window(nullptr), initialized(false)
+App::App() : window(nullptr), initialized(false), imgui(nullptr)
 {
     std::cout << "Constructing App" << '\n';
     // GLFW init
@@ -45,6 +47,8 @@ App::App() : window(nullptr), initialized(false)
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    imgui = std::make_unique<ImGuiHandler>(window);
+
     // Returns true in the isValid() function so everything went fine
     initialized = true;
 }
@@ -63,6 +67,19 @@ void App::run()
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // Start ImGui frame
+        imgui->beginFrame();
+
+        // ImGui UI
+        ImGui::Begin("Hello, ImGui!");
+        ImGui::Text("Hello, world!");
+        ImGui::End();
+
+        ImGui::ShowDemoWindow();
+
+        // Render ImGui
+        imgui->endFrame();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

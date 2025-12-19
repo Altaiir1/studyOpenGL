@@ -80,6 +80,35 @@ if(NOT (glm_FOUND AND TARGET glm::glm))
     set_target_properties(glm PROPERTIES FOLDER "Dependencies")
 endif()
 
+# ImGui
+set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/imgui)
+
+
+add_library(imgui STATIC
+        ${IMGUI_DIR}/imgui.cpp
+        ${IMGUI_DIR}/imgui_draw.cpp
+        ${IMGUI_DIR}/imgui_tables.cpp
+        ${IMGUI_DIR}/imgui_widgets.cpp
+        ${IMGUI_DIR}/imgui_demo.cpp
+
+        # Backends
+        ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(imgui PUBLIC
+    ${IMGUI_DIR}
+    ${IMGUI_DIR}/backends
+)
+
+target_link_libraries(imgui PUBLIC
+    glfw_target
+    glad_loader
+    OpenGL::GL
+)
+
+set_target_properties(imgui PROPERTIES FOLDER "Dependencies")
+
 add_subdirectory(App)
 
 if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
