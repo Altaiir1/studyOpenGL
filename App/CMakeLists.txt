@@ -20,6 +20,8 @@ file(GLOB_RECURSE APP_HEADERS
 add_executable(${PROJECT_NAME}
     ${APP_SOURCES}
     ${APP_HEADERS}
+        include/App.h
+        src/App.cpp
 )
 
 # Include your own header directory
