@@ -5,9 +5,10 @@
 #include <glad/glad.h>
 #include <iostream>
 
-#include "App.h"
-
 #include "imgui.h"
+
+#include "App.h"
+#include "UI.h"
 
 // initialized starts at false. Until the initialized is set to true
 // any crash will return the initial false boolean.
@@ -72,9 +73,7 @@ void App::run()
         imgui->beginFrame();
 
         // ImGui UI
-        ImGui::Begin("Hello, ImGui!");
-        ImGui::Text("Hello, world!");
-        ImGui::End();
+        ui.render();
 
         ImGui::ShowDemoWindow();
 
@@ -86,7 +85,7 @@ void App::run()
     }
 }
 
-// Returns wether the intialized returns too early (false if any error)
+// Returns whether the initialized returns too early (false if any error)
 // or not (true)
 bool App::isValid() const
 {
