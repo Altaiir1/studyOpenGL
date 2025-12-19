@@ -3,6 +3,7 @@
 //
 
 #include "Shader.h"
+#include <stdexcept>
 
 std::string get_file_contents(const char *filename)
 {
@@ -17,7 +18,7 @@ std::string get_file_contents(const char *filename)
         in.close();
         return contents;
     }
-    throw(errno);
+    throw std::runtime_error("Failed to open file: " + std::string(filename));
 }
 
 Shader::Shader(const char *vertexFile, const char *fragmentFile)
@@ -40,7 +41,9 @@ Shader::Shader(const char *vertexFile, const char *fragmentFile)
     if (!success)
     {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        glDeleteShader(vertexShader);
+        throw std::runtime_error("Vertex shader compilation failed");
     }
 
     // fragment shader
@@ -53,7 +56,10 @@ Shader::Shader(const char *vertexFile, const char *fragmentFile)
     if (!success)
     {
         glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+        throw std::runtime_error("Fragment shader compilation failed");
     }
 
     // link shaders
@@ -62,12 +68,27 @@ Shader::Shader(const char *vertexFile, const char *fragmentFile)
     glAttachShader(ID, fragmentShader);
     glLinkProgram(ID);
 
+    // check for linking errors
+    glGetProgramiv(ID, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        glGetProgramInfoLog(ID, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+        glDeleteProgram(ID);
+        ID = 0;  // Mark as invalid
+        throw std::runtime_error("Shader program linking failed");
+    }
+
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
 
 void Shader::Activate()
 {
+    if (ID == 0) {
+        std::cerr << "Warning: Attempting to activate invalid shader program" << '\n';
+        return;
+    }
     glUseProgram(ID);
 }
 
