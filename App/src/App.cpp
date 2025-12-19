@@ -2,16 +2,20 @@
 // Created by Lemi Yürekli on 19.12.25.
 //
 
-#include "App.h"
 #include <glad/glad.h>
 #include <iostream>
 
+#include "App.h"
+
+// initialized starts at false. Until the initialized is set to true
+// any crash will return the initial false boolean.
 App::App() : window(nullptr), initialized(false)
 {
+    std::cout << "Constructing App" << '\n';
     // GLFW init
     if (!glfwInit())
     {
-        std::cerr << "Failed to init GLFW" << std::endl;
+        std::cerr << "Failed to init GLFW" << '\n';
         return;
     }
 
@@ -40,10 +44,14 @@ App::App() : window(nullptr), initialized(false)
     }
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // Returns true in the isValid() function so everything went fine
+    initialized = true;
 }
 
 App::~App()
 {
+    std::cout << "Terminating App" << '\n';
     glfwTerminate();
 }
 
@@ -61,6 +69,8 @@ void App::run()
     }
 }
 
+// Returns wether the intialized returns too early (false if any error)
+// or not (true)
 bool App::isValid() const
 {
     return initialized;
