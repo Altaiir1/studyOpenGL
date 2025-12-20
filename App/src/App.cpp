@@ -101,6 +101,9 @@ void App::run()
 
         shader->Activate();
 
+        GLuint location = glGetUniformLocation(shader->ID, "offset");
+        glUniform2f(location, 0.5f, 0.5);
+
         VAO1->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
