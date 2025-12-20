@@ -5,9 +5,6 @@
 
 int main()
 {
-    { // Scope ensures timer destructor runs here, printing elapsed time
-        utils::Timer timer("Initialization");
-    }
 
     // Initialize Application
     App app;
