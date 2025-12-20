@@ -21,12 +21,12 @@ add_executable(${PROJECT_NAME}
     ${APP_SOURCES}
     ${APP_HEADERS}
         src/App.cpp
-        src/ImGuiHandler.cpp
-        src/UI.cpp
-        src/Shader.cpp
-        src/VAO.cpp
-        src/VBO.cpp
-        src/EBO.cpp
+        src/utils/ImGuiHandler.cpp
+        src/UI/UI.cpp
+        src/Shader/Shader.cpp
+        src/BufferObjs/VAO.cpp
+        src/BufferObjs/VBO.cpp
+        src/BufferObjs/EBO.cpp
 )
 
 # Include your own header directory

@@ -24,7 +24,7 @@ namespace utils
             const auto durationInMin = std::chrono::duration_cast<std::chrono::minutes>(end - start);
             std::cout << name << ": " << durationInMs.count() << " ms" << '\n';
             std::cout << name << ": " << durationInSec.count() << " s" << '\n';
-            std::cout << name << ": " << durationInMin.count() << " m" << '\n\n';
+            std::cout << name << ": " << durationInMin.count() << " m\n" << '\n';
         }
 
         // Prevent copying

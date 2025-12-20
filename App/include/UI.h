@@ -6,7 +6,12 @@ public:
     void render();
 
 private:
-    void renderSettings();
+    void beginWindow(const char* title);
+    void endWindow();
 
+    // Components
+    void renderSettings();
     bool setWireframe = false;
+
+    void textTool();
 };
