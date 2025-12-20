@@ -67,11 +67,12 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     }
 
     // Vertices
-    float verticesA[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f,
-    };
+    float vertices[] = {
+        // positions         // colors
+        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+       -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
+   };
 
     /* unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,  // first Triangle
@@ -82,8 +83,13 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
 
     VAO1 = std::make_unique<VAO>();
     VAO1->Bind();
-    VBO1 = std::make_unique<VBO>(verticesA, sizeof(verticesA));
-    VAO1->LinkVBO(*VBO1, 0);
+    VBO1 = std::make_unique<VBO>(vertices, sizeof(vertices));
+    
+    // position attribute (layout = 0)
+    VAO1->LinkVBO(*VBO1, 0, 3, 6 * sizeof(float), 0);
+    // color attribute (layout = 1)
+    VAO1->LinkVBO(*VBO1, 1, 3, 6 * sizeof(float), 3 * sizeof(float));
+    
     VBO1->Unbind();
     VAO1->Unbind();
 
@@ -116,11 +122,6 @@ void App::run()
         Clear();
 
         shader->Activate();
-
-        const float timeValue = glfwGetTime();
-        float greenValue = sin(timeValue) / 2.0f + 0.5f;
-        const int vertexColorLocation = glGetUniformLocation(shader->ID, "ourColor");
-        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
         VAO1->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
