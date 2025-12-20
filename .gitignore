@@ -5,4 +5,6 @@ cmake-build-*/
 *.user
 .idea/
 
+Docs/
+
 .DS_Store
