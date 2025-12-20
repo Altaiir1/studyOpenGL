@@ -18,9 +18,13 @@ namespace utils
 
         ~Timer()
         {
-            auto end = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-            std::cout << name << ": " << duration.count() << " ms\n" << '\n';
+            const auto end = std::chrono::high_resolution_clock::now();
+            const auto durationInMs = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            const auto durationInSec = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+            const auto durationInMin = std::chrono::duration_cast<std::chrono::minutes>(end - start);
+            std::cout << name << ": " << durationInMs.count() << " ms" << '\n';
+            std::cout << name << ": " << durationInSec.count() << " s" << '\n';
+            std::cout << name << ": " << durationInMin.count() << " m" << '\n\n';
         }
 
         // Prevent copying
