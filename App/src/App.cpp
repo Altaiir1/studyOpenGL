@@ -104,7 +104,7 @@ void App::run()
         return;
     }
     
-    std::cout << "All checks passed, entering render loop" << '\n';
+    std::cout << "All checks passed, entering render loop\n" << '\n';
     
     while (!glfwWindowShouldClose(window))
     {
