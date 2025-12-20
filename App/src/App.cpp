@@ -56,8 +56,7 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     // Initialize shader after OpenGL context is ready
     try {
         shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
-        shader2 = std::make_unique<Shader>("shaders/default.vert", "shaders/second.frag");
-        std::cout << "Shader 1 & 2 loaded successfully" << '\n';
+        std::cout << "Shader loaded successfully" << '\n';
     } catch (const std::exception& e) {
         std::cerr << "Failed to load shader: " << e.what() << '\n';
         return;
@@ -65,15 +64,9 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
 
     // Vertices
     float verticesA[] = {
-        -1.0f, -0.5f, 0.0f,
-         0.0f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f,
-    };
-
-    float verticesB[] = {
-         0.0f, -0.5f, 0.0f,
-         1.0f, -0.5f, 0.0f,
-         0.5f,  0.5f, 0.0f
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f,
     };
 
     /* unsigned int indices[] = {  // note that we start from 0!
@@ -89,14 +82,6 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     VAO1->LinkVBO(*VBO1, 0);
     VBO1->Unbind();
     VAO1->Unbind();
-
-
-    VAO2 = std::make_unique<VAO>();
-    VAO2->Bind();
-    VBO2 = std::make_unique<VBO>(verticesB, sizeof(verticesB));
-    VAO2->LinkVBO(*VBO2, 0);
-    VBO2->Unbind();
-    VAO2->Unbind();
 
     std::cout << "VAO, VBO, EBO setup complete" << '\n';
 
@@ -130,11 +115,6 @@ void App::run()
         shader->Activate();
         VAO1->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        shader2->Activate();
-        VAO2->Bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         // IMGUI
         imgui->beginFrame();
