@@ -1,9 +1,14 @@
 #include <iostream>
 
 #include "App.h"
+#include "Timer.h"
 
 int main()
 {
+    { // Scope ensures timer destructor runs here, printing elapsed time
+        utils::Timer timer("Initialization");
+    }
+
     // Initialize Application
     App app;
 
@@ -13,7 +18,7 @@ int main()
         return -1;
     }
 
-    // Run main loop
+    utils::Timer timer("Main loop");
     app.run();
 
     return 0;
