@@ -9,6 +9,7 @@
 
 #include "ImGuiHandler.h"
 #include "UI.h"
+#include "Settings.h"
 #include "Shader.h"
 #include "VAO.h"
 #include "VBO.h"
@@ -26,7 +27,8 @@ private:
     // Can't pass nullptr to a non-pointer initialization
     std::unique_ptr<Window> window;
     std::unique_ptr<ImGuiHandler> imgui;
-    UI ui;
+    Settings settings;  // App owns the settings/state
+    UI ui;              // UI is presentation-only, receives settings reference
     std::unique_ptr<Shader> shader;
     std::unique_ptr<VAO> VAO1;
     std::unique_ptr<VBO> VBO1;

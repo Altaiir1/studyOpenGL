@@ -101,16 +101,22 @@ void App::run()
 
         shader->Activate();
 
-        GLuint location = glGetUniformLocation(shader->ID, "offset");
-        glUniform2f(location, 0.5f, 0.5);
+        // Set offset uniform (if you still want to use it)
+        GLuint offsetLocation = glGetUniformLocation(shader->ID, "offset");
+        glUniform2f(offsetLocation, 0.5f, 0.5f);
+
+        // Set triangle color uniform from settings (which UI modifies)
+        // NOTE: Always use 'settings' (the member variable) - don't create new Settings objects!
+        GLuint colorLocation = glGetUniformLocation(shader->ID, "triangleColor");
+        glUniform3f(colorLocation, settings.triangleColor[0], settings.triangleColor[1], settings.triangleColor[2]);
 
         VAO1->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        // IMGUI
+        // IMGUI - pass settings reference so UI can read/write to it
         imgui->beginFrame();
 
-        ui.render();
+        ui.render(settings);
         // ImGui::ShowDemoWindow();
 
         imgui->endFrame();

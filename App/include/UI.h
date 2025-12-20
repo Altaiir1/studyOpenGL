@@ -1,17 +1,18 @@
 #pragma once
 
+class Settings;
+
 class UI
 {
 public:
-    void render();
+    void render(Settings& settings);
 
 private:
     void beginWindow(const char* title);
     void endWindow();
 
-    // Components
-    void renderSettings();
-    bool setWireframe = false;
+    void renderSettings(Settings& settings);
+    void renderTriangleColor(Settings& settings);
 
     void textTool();
 };

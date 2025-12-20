@@ -1,18 +1,17 @@
 #include "UI.h"
+#include "Settings.h"
 
 #include <cmath>
 
 #include "imgui.h"
 #include "glad/glad.h"
 
-// To create custom  UI components you have to create it inside UI.h
-// Create a method and build components below. Lastly: Set the method inside render
-
-// Active or Deactivate UI components
-void UI::render()
+void UI::render(Settings& settings)
 {
     beginWindow("Settings");
-    renderSettings();
+    renderSettings(settings);
+    ImGui::Separator();
+    renderTriangleColor(settings);
     ImGui::Separator();
     textTool();
     endWindow();
@@ -28,16 +27,23 @@ void UI::endWindow()
     ImGui::End();
 }
 
-void UI::renderSettings()
+void UI::renderSettings(Settings& settings)
 {
     ImGui::Text("Wireframe Mode");
-    ImGui::Checkbox("Set Wireframe", &setWireframe);
+    // ImGui directly modifies settings.wireframeMode
+    ImGui::Checkbox("Set Wireframe", &settings.wireframeMode);
 
-    // Apply wireframe mode based on checkbox state
-    if (setWireframe)
+    // Apply wireframe mode based on settings state
+    if (settings.wireframeMode)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void UI::renderTriangleColor(Settings& settings)
+{
+    ImGui::Text("Triangle Color");
+    ImGui::ColorEdit3("Color", settings.triangleColor);
 }
 
 void UI::textTool()
