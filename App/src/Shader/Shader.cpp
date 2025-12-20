@@ -83,7 +83,7 @@ Shader::Shader(const char *vertexFile, const char *fragmentFile)
     glDeleteShader(fragmentShader);
 }
 
-void Shader::Activate()
+void Shader::Activate() const
 {
     if (ID == 0) {
         std::cerr << "Warning: Attempting to activate invalid shader program" << '\n';
@@ -92,7 +92,7 @@ void Shader::Activate()
     glUseProgram(ID);
 }
 
-void Shader::Delete()
+void Shader::Delete() const
 {
     glDeleteProgram(ID);
 }
