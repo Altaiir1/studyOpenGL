@@ -8,6 +8,9 @@
 #include "imgui.h"
 
 #include "App.h"
+
+#include <cmath>
+
 #include "UI.h"
 #include "Shader.h"
 #include "VBO.h"
@@ -110,10 +113,15 @@ void App::run()
     while (!glfwWindowShouldClose(window))
     {
         processInput();
-
         Clear();
 
         shader->Activate();
+
+        const float timeValue = glfwGetTime();
+        float greenValue = sin(timeValue) / 2.0f + 0.5f;
+        const int vertexColorLocation = glGetUniformLocation(shader->ID, "ourColor");
+        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
         VAO1->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
