@@ -31,8 +31,7 @@ private:
     std::unique_ptr<VBO> VBO1;
     std::unique_ptr<EBO> EBO1;
 
-    static void framebuffer_size_callback(GLFWwindow *window, int width,
-                                          int height);
+    static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
     void processInput();
 
 public:

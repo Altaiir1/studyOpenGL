@@ -18,7 +18,7 @@
 // any crash will return the initial false boolean.
 App::App() : window(nullptr), initialized(false), imgui(nullptr)
 {
-    std::cout << "Constructing App" << '\n';
+    std::cout << "Constructing App\n\n";
 
     if (!glfwInit())
     {
@@ -55,8 +55,9 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
 
     // Initialize shader after OpenGL context is ready
     try {
+        std::cout << "Loading Shader successfully\n\n";
         shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
-        std::cout << "Shader loaded successfully" << '\n';
+        std::cout << "Shader loaded successfully\n\n";
     } catch (const std::exception& e) {
         std::cerr << "Failed to load shader: " << e.what() << '\n';
         return;
@@ -83,7 +84,7 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     VBO1->Unbind();
     VAO1->Unbind();
 
-    std::cout << "VAO, VBO, EBO setup complete" << '\n';
+    std::cout << "VAO, VBO, EBO setup complete\n\n";
 
     // Returns true in the isValid() function so everything went fine
     initialized = true;
