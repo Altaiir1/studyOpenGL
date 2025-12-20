@@ -70,13 +70,18 @@ set_target_properties(glad_loader PROPERTIES FOLDER "Dependencies")
 
 # GLM
 find_package(glm 1.0.1 QUIET)
+
 if(NOT (glm_FOUND AND TARGET glm::glm))
+    include(FetchContent)
+
     FetchContent_Declare(
-        glm
-        URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1.zip
-        DOWNLOAD_EXTRACT_TIMESTAMP OFF
+            glm
+            GIT_REPOSITORY https://github.com/g-truc/glm.git
+            GIT_TAG 1.0.1
     )
+
     FetchContent_MakeAvailable(glm)
+
     set_target_properties(glm PROPERTIES FOLDER "Dependencies")
 endif()
 

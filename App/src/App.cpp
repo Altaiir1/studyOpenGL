@@ -56,39 +56,48 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
     // Initialize shader after OpenGL context is ready
     try {
         shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
-        std::cout << "Shader loaded successfully" << '\n';
+        shader2 = std::make_unique<Shader>("shaders/default.vert", "shaders/second.frag");
+        std::cout << "Shader 1 & 2 loaded successfully" << '\n';
     } catch (const std::exception& e) {
         std::cerr << "Failed to load shader: " << e.what() << '\n';
         return;
     }
 
     // Vertices
-    float vertices[] = {
-        0.5f,  0.5f, 0.0f,  // top right
-        0.5f, -0.5f, 0.0f,  // bottom right
-       -0.5f, -0.5f, 0.0f,  // bottom left
-       -0.5f,  0.5f, 0.0f   // top left
-   };
+    float verticesA[] = {
+        -1.0f, -0.5f, 0.0f,
+         0.0f, -0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f,
+    };
 
-    unsigned int indices[] = {  // note that we start from 0!
+    float verticesB[] = {
+         0.0f, -0.5f, 0.0f,
+         1.0f, -0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f
+    };
+
+    /* unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,  // first Triangle
         1, 2, 3   // second Triangle
-    };
+    }; */
     
     std::cout << "Setting up VAO, VBO, EBO..." << '\n';
-    // Create VAO, VBO, and EBO after OpenGL context is ready
+
     VAO1 = std::make_unique<VAO>();
     VAO1->Bind();
-    
-    // Create VBO and EBO as member variables so they stay alive
-    VBO1 = std::make_unique<VBO>(vertices, sizeof(vertices));
-    EBO1 = std::make_unique<EBO>(indices, sizeof(indices));
-
+    VBO1 = std::make_unique<VBO>(verticesA, sizeof(verticesA));
     VAO1->LinkVBO(*VBO1, 0);
-    // EBO is automatically bound to VAO when created - VAO stores this binding
-    // The EBO binding is stored in the VAO, so we can unbind globally
-    VBO1->Unbind();  // VBO can be unbound, VAO remembers the configuration
-    VAO1->Unbind();   // Unbind VAO, but it remembers the EBO binding
+    VBO1->Unbind();
+    VAO1->Unbind();
+
+
+    VAO2 = std::make_unique<VAO>();
+    VAO2->Bind();
+    VBO2 = std::make_unique<VBO>(verticesB, sizeof(verticesB));
+    VAO2->LinkVBO(*VBO2, 0);
+    VBO2->Unbind();
+    VAO2->Unbind();
+
     std::cout << "VAO, VBO, EBO setup complete" << '\n';
 
     // Returns true in the isValid() function so everything went fine
@@ -110,36 +119,29 @@ void App::run()
         return;
     }
     
-    if (!VAO1 || !VBO1 || !EBO1) {
-        std::cerr << "Error: VAO, VBO, or EBO is null, cannot render" << '\n';
-        return;
-    }
-    
     std::cout << "All checks passed, entering render loop" << '\n';
     
     while (!glfwWindowShouldClose(window))
     {
         processInput();
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        Clear();
 
         shader->Activate();
         VAO1->Bind();
-        // EBO binding is automatically restored when VAO is bound
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        //glDrawArrays(GL_TRIANGLES, 0, 6);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        shader2->Activate();
+        VAO2->Bind();
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-        // Start ImGui frame
+        // IMGUI
         imgui->beginFrame();
 
-        // ImGui UI
         ui.render();
+        // ImGui::ShowDemoWindow();
 
-        ImGui::ShowDemoWindow();
-
-        // Render ImGui
         imgui->endFrame();
 
         glfwSwapBuffers(window);
@@ -152,6 +154,11 @@ void App::run()
 bool App::isValid() const
 {
     return initialized;
+}
+
+void App::Clear() {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void App::framebuffer_size_callback(GLFWwindow *window, int width, int height)
