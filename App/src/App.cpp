@@ -19,7 +19,7 @@
 App::App() : window(nullptr), initialized(false), imgui(nullptr)
 {
     std::cout << "Constructing App" << '\n';
-    // GLFW init
+
     if (!glfwInit())
     {
         std::cerr << "Failed to init GLFW" << '\n';
