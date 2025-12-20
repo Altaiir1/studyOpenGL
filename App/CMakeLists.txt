@@ -27,6 +27,8 @@ add_executable(${PROJECT_NAME}
         src/BufferObjs/VAO.cpp
         src/BufferObjs/VBO.cpp
         src/BufferObjs/EBO.cpp
+        src/Window.cpp
+        include/Window.h
 )
 
 # Include your own header directory

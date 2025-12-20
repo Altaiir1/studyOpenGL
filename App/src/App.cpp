@@ -16,37 +16,15 @@
 #include "VBO.h"
 #include "VAO.h"
 #include "EBO.h"
+#include "Window.h"
 
 // initialized starts at false. Until the initialized is set to true
 // any crash will return the initial false boolean.
-App::App() : window(nullptr), initialized(false), imgui(nullptr)
+App::App() : initialized(false), imgui(nullptr)
 {
     std::cout << "Constructing App\n\n";
 
-    if (!glfwInit())
-    {
-        std::cerr << "Failed to init GLFW" << '\n';
-        return;
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-    window = glfwCreateWindow(640, 480, "Hello World!", NULL, NULL);
-    if (window == nullptr)
-    {
-        std::cerr << "Failed to create GLFW window" << '\n';
-        glfwTerminate();
-        return;
-    }
-
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    window = std::make_unique<Window>();
 
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
     {
@@ -54,7 +32,7 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
         return;
     }
 
-    imgui = std::make_unique<ImGuiHandler>(window);
+    imgui = std::make_unique<ImGuiHandler>(window->getGLFWWindow());
 
     // Initialize shader after OpenGL context is ready
     try {
@@ -102,7 +80,7 @@ App::App() : window(nullptr), initialized(false), imgui(nullptr)
 App::~App()
 {
     std::cout << "Terminating App" << '\n';
-    glfwTerminate();
+    // Window destructor will handle glfwTerminate()
 }
 
 void App::run()
@@ -116,7 +94,7 @@ void App::run()
     
     std::cout << "All checks passed, entering render loop\n" << '\n';
     
-    while (!glfwWindowShouldClose(window))
+    while (!window->shouldClose())
     {
         processInput();
         Clear();
@@ -134,8 +112,8 @@ void App::run()
 
         imgui->endFrame();
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        window->swapBuffers();
+        window->pollEvents();
     }
 }
 
@@ -151,15 +129,10 @@ void App::Clear() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void App::framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-}
-
 // Here we don't pass window as a parameter since window pointer is a member
 // therefore it's part of the Object Data
 void App::processInput()
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window->getGLFWWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window->getGLFWWindow(), true);
 }
