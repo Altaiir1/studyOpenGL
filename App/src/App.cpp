@@ -45,7 +45,6 @@ App::App() : initialized(false), imgui(nullptr)
 	}
 
 	// TEXTURES
-	static unsigned int texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
