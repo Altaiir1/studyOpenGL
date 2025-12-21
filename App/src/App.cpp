@@ -1,175 +1,140 @@
-//
-// Created by Lemi Yürekli on 19.12.25.
-//
-
 #include <glad/glad.h>
 #include <iostream>
 
 #include "imgui.h"
 
 #include "App.h"
-#include "UI.h"
+
+#include <cmath>
+
+#include "../include/UI/UI.h"
 #include "Shader.h"
-#include "VBO.h"
-#include "VAO.h"
-#include "EBO.h"
+#include "BufferObjs/VBO.h"
+#include "BufferObjs/VAO.h"
+#include "BufferObjs/EBO.h"
+#include "Window.h"
+#include "utils/Debug.h"
 
-// initialized starts at false. Until the initialized is set to true
-// any crash will return the initial false boolean.
-App::App() : window(nullptr), initialized(false), imgui(nullptr)
+App::App() : initialized(false), imgui(nullptr)
 {
-    std::cout << "Constructing App" << '\n';
-    // GLFW init
-    if (!glfwInit())
-    {
-        std::cerr << "Failed to init GLFW" << '\n';
-        return;
-    }
+	std::cout << "Constructing App\n\n";
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	window = std::make_unique<Window>();
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cerr << "Failed to initialize GLAD" << '\n';
+		return;
+	}
 
-    window = glfwCreateWindow(640, 480, "Hello World!", NULL, NULL);
-    if (window == nullptr)
-    {
-        std::cerr << "Failed to create GLFW window" << '\n';
-        glfwTerminate();
-        return;
-    }
+	// Enable Debug Utility
+	GLEnableDebugOutput();
 
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	imgui = std::make_unique<ImGuiHandler>(window->getGLFWWindow());
 
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-    {
-        std::cerr << "Failed to initialize GLAD" << '\n';
-        return;
-    }
+	try {
+		std::cout << "Loading Shader...\n";
+		shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
+		std::cout << "Shader loaded successfully\n\n";
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Failed to load shader: " << e.what() << '\n';
+		return;
+	}
 
-    imgui = std::make_unique<ImGuiHandler>(window);
+	// Vertices
+	float vertices[] = {
+		// positions         // colors
+		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+	   -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
+	};
 
-    // Initialize shader after OpenGL context is ready
-    try {
-        shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
-        shader2 = std::make_unique<Shader>("shaders/default.vert", "shaders/second.frag");
-        std::cout << "Shader 1 & 2 loaded successfully" << '\n';
-    } catch (const std::exception& e) {
-        std::cerr << "Failed to load shader: " << e.what() << '\n';
-        return;
-    }
+	/* unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,  // first Triangle
+		1, 2, 3   // second Triangle
+	}; */
 
-    // Vertices
-    float verticesA[] = {
-        -1.0f, -0.5f, 0.0f,
-         0.0f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f,
-    };
+	std::cout << "Setting up VAO, VBO, EBO..." << '\n';
 
-    float verticesB[] = {
-         0.0f, -0.5f, 0.0f,
-         1.0f, -0.5f, 0.0f,
-         0.5f,  0.5f, 0.0f
-    };
+	VAO1 = std::make_unique<VAO>();
+	VAO1->Bind();
+	VBO1 = std::make_unique<VBO>(vertices, sizeof(vertices));
 
-    /* unsigned int indices[] = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3   // second Triangle
-    }; */
-    
-    std::cout << "Setting up VAO, VBO, EBO..." << '\n';
+	// position attribute (layout = 0)
+	VAO1->LinkVBO(*VBO1, 0, 3, 6 * sizeof(float), 0);
+	// color attribute (layout = 1)
+	VAO1->LinkVBO(*VBO1, 1, 3, 6 * sizeof(float), 3 * sizeof(float));
 
-    VAO1 = std::make_unique<VAO>();
-    VAO1->Bind();
-    VBO1 = std::make_unique<VBO>(verticesA, sizeof(verticesA));
-    VAO1->LinkVBO(*VBO1, 0);
-    VBO1->Unbind();
-    VAO1->Unbind();
+	VBO1->Unbind();
+	VAO1->Unbind();
 
+	std::cout << "VAO, VBO, EBO setup complete\n\n";
 
-    VAO2 = std::make_unique<VAO>();
-    VAO2->Bind();
-    VBO2 = std::make_unique<VBO>(verticesB, sizeof(verticesB));
-    VAO2->LinkVBO(*VBO2, 0);
-    VBO2->Unbind();
-    VAO2->Unbind();
-
-    std::cout << "VAO, VBO, EBO setup complete" << '\n';
-
-    // Returns true in the isValid() function so everything went fine
-    initialized = true;
+	// Returns true in the isValid() function so everything went fine
+	initialized = true;
 }
 
 App::~App()
 {
-    std::cout << "Terminating App" << '\n';
-    glfwTerminate();
+	std::cout << "Terminating App" << '\n';
 }
 
 void App::run()
 {
-    std::cout << "Starting render loop..." << '\n';
-    
-    if (!shader) {
-        std::cerr << "Error: Shader is null, cannot render" << '\n';
-        return;
-    }
-    
-    std::cout << "All checks passed, entering render loop" << '\n';
-    
-    while (!glfwWindowShouldClose(window))
-    {
-        processInput();
+	std::cout << "Starting render loop..." << '\n';
 
-        Clear();
+	if (!shader) {
+		std::cerr << "Error: Shader is null, cannot render" << '\n';
+		return;
+	}
 
-        shader->Activate();
-        VAO1->Bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+	std::cout << "All checks passed, entering render loop\n" << '\n';
 
-        shader2->Activate();
-        VAO2->Bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	while (!window->shouldClose())
+	{
+		processInput();
+		Clear();
 
-        // IMGUI
-        imgui->beginFrame();
+		shader->Activate();
 
-        ui.render();
-        // ImGui::ShowDemoWindow();
+		GLuint offsetLocation = glGetUniformLocation(shader->ID, "offset");
+		GLCall(glUniform2f(offsetLocation, 0.5f, 0.5f));
 
-        imgui->endFrame();
+		GLuint colorLocation = glGetUniformLocation(shader->ID, "triangleColor");
+		GLCall(glUniform3f(colorLocation, settings.triangleColor[0], settings.triangleColor[1], settings.triangleColor[2]));
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+		VAO1->Bind();
+		GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
+
+		imgui->beginFrame();
+
+		ui.render(settings);
+		// ImGui::ShowDemoWindow();
+
+		imgui->endFrame();
+
+		window->swapBuffers();
+		window->pollEvents();
+	}
 }
 
 // Returns whether the initialized returns too early (false if any error)
 // or not (true)
 bool App::isValid() const
 {
-    return initialized;
+	return initialized;
 }
 
 void App::Clear() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void App::framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-    glViewport(0, 0, width, height);
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 // Here we don't pass window as a parameter since window pointer is a member
 // therefore it's part of the Object Data
 void App::processInput()
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window->getGLFWWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window->getGLFWWindow(), true);
 }

@@ -1,9 +1,11 @@
 #include <iostream>
 
 #include "App.h"
+#include "../include/utils/Timer.h"
 
 int main()
 {
+
     // Initialize Application
     App app;
 
@@ -13,7 +15,7 @@ int main()
         return -1;
     }
 
-    // Run main loop
+    utils::Timer timer("Main loop");
     app.run();
 
     return 0;

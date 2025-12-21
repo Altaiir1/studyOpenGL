@@ -21,13 +21,16 @@ add_executable(${PROJECT_NAME}
     ${APP_SOURCES}
     ${APP_HEADERS}
         src/App.cpp
-        src/ImGuiHandler.cpp
-        src/UI.cpp
-        src/Shader.cpp
-        src/VAO.cpp
-        src/VBO.cpp
-        src/EBO.cpp
-)
+        src/utils/ImGuiHandler.cpp
+        src/UI/UI.cpp
+        src/Shader/Shader.cpp
+        src/BufferObjs/VAO.cpp
+        src/BufferObjs/VBO.cpp
+        src/BufferObjs/EBO.cpp
+        src/Window.cpp
+        include/Window.h
+        include/utils/Debug.h
+ "include/utils/Debug.h" )
 
 # Include your own header directory
 target_include_directories(${PROJECT_NAME}

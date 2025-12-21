@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 4.0)
 
 project(MyOpenGLApp VERSION 1.0.0 LANGUAGES C CXX)
 
@@ -71,7 +71,7 @@ set_target_properties(glad_loader PROPERTIES FOLDER "Dependencies")
 # GLM
 find_package(glm 1.0.1 QUIET)
 
-if(NOT (glm_FOUND AND TARGET glm::glm))
+if(NOT TARGET glm::glm)
     include(FetchContent)
 
     FetchContent_Declare(

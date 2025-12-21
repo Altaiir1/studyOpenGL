@@ -14,6 +14,9 @@ public:
     ImGuiHandler(GLFWwindow* window);
     ~ImGuiHandler();
 
+    ImGuiHandler(const ImGuiHandler&) = delete;
+    ImGuiHandler& operator=(const ImGuiHandler&) = delete;
+
     void beginFrame();
     void endFrame();
 };
