@@ -30,12 +30,13 @@ add_executable(${PROJECT_NAME}
         src/Window.cpp
         include/Window.h
         include/utils/Debug.h
- "include/utils/Debug.h" )
+        src/utils/stb_image_impl.cpp)
 
 # Include your own header directory
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/external  # For stb_image/stb_image.h
         imgui
 )
 
@@ -63,4 +64,14 @@ add_custom_target(copy_shaders ALL
     COMMENT "Copying shader files..."
 )
 
-add_dependencies(${PROJECT_NAME} copy_shaders)
+add_custom_target(copy_assets ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/shaders
+        ${CMAKE_CURRENT_BINARY_DIR}/shaders
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources
+        ${CMAKE_CURRENT_BINARY_DIR}/resources
+        COMMENT "Copying shaders and resources..."
+)
+
+add_dependencies(${PROJECT_NAME} copy_assets)

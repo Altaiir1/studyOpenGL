@@ -10,7 +10,7 @@ public:
     bool wireframeMode = false;
     
     // Triangle settings
-    float triangleColor[3] = {1.0f, 1.0f, 1.0f};
+    // float triangleColor[3] = {1.0f, 1.0f, 1.0f};
     
     // Add more settings here...
 };

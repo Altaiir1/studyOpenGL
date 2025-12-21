@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.0)
 
-project(MyOpenGLApp VERSION 1.0.0 LANGUAGES C CXX)
+project(studyOpenGL VERSION 1.0.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -50,8 +50,6 @@ if(APPLE)
     set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glad/mac")
 elseif(WIN32)
     set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glad/windows")
-elseif(UNIX AND NOT APPLE)
-    set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glad/linux")
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()
@@ -87,7 +85,6 @@ endif()
 
 # ImGui
 set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/imgui)
-
 
 add_library(imgui STATIC
         ${IMGUI_DIR}/imgui.cpp

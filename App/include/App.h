@@ -33,6 +33,7 @@ private:
     std::unique_ptr<VAO> VAO1;
     std::unique_ptr<VBO> VBO1;
     std::unique_ptr<EBO> EBO1;
+    unsigned int texture = 0;
 
     void processInput();
 

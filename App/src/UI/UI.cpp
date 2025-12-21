@@ -14,9 +14,9 @@ void UI::render(Settings& settings)
     textTool();
     endWindow();
 
-    beginWindow("Triangle");
+    /* beginWindow("Triangle");
     renderTriangleColor(settings);
-    endWindow();
+    endWindow(); */
 }
 
 void UI::beginWindow(const char *title)
@@ -42,11 +42,13 @@ void UI::renderSettings(Settings& settings)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+/*
 void UI::renderTriangleColor(Settings& settings)
 {
     ImGui::Text("Triangle Color");
     ImGui::ColorEdit3("Color", settings.triangleColor);
 }
+*/
 
 void UI::textTool()
 {
