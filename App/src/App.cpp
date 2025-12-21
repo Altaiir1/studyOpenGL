@@ -27,8 +27,10 @@ App::App() : initialized(false), imgui(nullptr)
 		return;
 	}
 
-	// Enable Debug Utility
+	// Enable Debug Utility (not available on macOS - OpenGL 4.1 max)
+#ifndef __APPLE__
 	GLEnableDebugOutput();
+#endif
 
 	imgui = std::make_unique<ImGuiHandler>(window->getGLFWWindow());
 

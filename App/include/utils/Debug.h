@@ -23,6 +23,7 @@ inline bool GLCheckError(const char* function, const char* file, int line) {
 #define GLCall(x) GLClearError(); x; GLCheckError(#x, __FILE__, __LINE__)
 #endif
 
+#ifndef __APPLE__  // OpenGL 4.3+ debug callbacks are not available on macOS (4.1 max)
 inline void APIENTRY glDebugOutput(GLenum source,
 	GLenum type,
 	unsigned int id,
@@ -98,3 +99,4 @@ inline void GLEnableDebugOutput()
 		std::cout << "Using manual error checking only (GLCall macro)\n\n";
 	}
 }
+#endif
