@@ -1,7 +1,7 @@
 #include <cmath>
 
-#include "imgui.h"
 #include "glad/glad.h"
+#include "imgui.h"
 
 #include "UI/UI.h"
 #include "UI/Settings.h"
