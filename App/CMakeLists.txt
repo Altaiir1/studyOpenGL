@@ -29,7 +29,8 @@ add_executable(${PROJECT_NAME}
         src/BufferObjs/EBO.cpp
         src/Window.cpp
         include/Window.h
-)
+        include/utils/Debug.h
+ "include/utils/Debug.h" )
 
 # Include your own header directory
 target_include_directories(${PROJECT_NAME}
