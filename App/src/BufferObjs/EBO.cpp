@@ -2,7 +2,7 @@
 // Created by Lemi Yürekli on 19.12.25.
 //
 
-#include "EBO.h"
+#include "../../include/BufferObjs/EBO.h"
 
 EBO::EBO(GLuint *indices, GLsizeiptr size)
 {

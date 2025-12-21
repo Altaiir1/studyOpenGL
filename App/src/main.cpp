@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "App.h"
-#include "Timer.h"
+#include "../include/utils/Timer.h"
 
 int main()
 {

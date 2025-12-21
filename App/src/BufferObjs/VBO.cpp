@@ -2,7 +2,7 @@
 // Created by Lemi Yürekli on 19.12.25.
 //
 
-#include "VBO.h"
+#include "../../include/BufferObjs/VBO.h"
 
 VBO::VBO(GLfloat *vertices, GLsizeiptr size)
 {

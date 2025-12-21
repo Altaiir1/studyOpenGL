@@ -1,19 +1,21 @@
-#include "UI.h"
-#include "Settings.h"
-
 #include <cmath>
 
 #include "imgui.h"
 #include "glad/glad.h"
+
+#include "UI/UI.h"
+#include "UI/Settings.h"
 
 void UI::render(Settings& settings)
 {
     beginWindow("Settings");
     renderSettings(settings);
     ImGui::Separator();
-    renderTriangleColor(settings);
-    ImGui::Separator();
     textTool();
+    endWindow();
+
+    beginWindow("Triangle");
+    renderTriangleColor(settings);
     endWindow();
 }
 

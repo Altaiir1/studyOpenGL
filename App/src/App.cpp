@@ -11,11 +11,11 @@
 
 #include <cmath>
 
-#include "UI.h"
+#include "../include/UI/UI.h"
 #include "Shader.h"
-#include "VBO.h"
-#include "VAO.h"
-#include "EBO.h"
+#include "../include/BufferObjs/VBO.h"
+#include "../include/BufferObjs/VAO.h"
+#include "../include/BufferObjs/EBO.h"
 #include "Window.h"
 
 // initialized starts at false. Until the initialized is set to true

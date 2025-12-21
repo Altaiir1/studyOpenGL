@@ -8,12 +8,12 @@
 #include <glad/glad.h>
 
 #include "ImGuiHandler.h"
-#include "UI.h"
-#include "Settings.h"
+#include "UI/UI.h"
+#include "UI/Settings.h"
 #include "Shader.h"
-#include "VAO.h"
-#include "VBO.h"
-#include "EBO.h"
+#include "BufferObjs/VAO.h"
+#include "BufferObjs/VBO.h"
+#include "BufferObjs/EBO.h"
 #include "Window.h"
 
 class Window;
