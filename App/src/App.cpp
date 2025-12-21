@@ -103,6 +103,7 @@ bool App::initTextures()
 	try
 	{
 		texture1 = std::make_unique<Texture>("resources/textures/container.jpg");
+		texture2 = std::make_unique<Texture>("resources/textures/awesomeface.png");
 		std::cout << "Texture loaded successfully\n\n";
 		return true;
 	} catch (const std::exception& e)
@@ -156,6 +157,7 @@ void App::setupShaderUniforms()
 {
 	shader->Activate();
 	shader->setInt("texture1", 0);
+	shader->setInt("texture2", 1);
 }
 
 void App::render()
@@ -164,6 +166,7 @@ void App::render()
 
 	// Bind textures to texture units
 	texture1->Activate(GL_TEXTURE0);
+	texture2->Activate(GL_TEXTURE1);
 
 	// Draw geometry
 	VAO1->Bind();
