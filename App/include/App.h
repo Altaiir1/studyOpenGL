@@ -1,42 +1,55 @@
-//
-// Created by Lemi Yürekli on 19.12.25.
-//
-
 #pragma once
 
 #include <memory>
-#include <glad/glad.h>
+#include <UI/Settings.h>
 
+#include "Window.h"
 #include "ImGuiHandler.h"
 #include "UI/UI.h"
-#include "UI/Settings.h"
 #include "Shader.h"
 #include "BufferObjs/VAO.h"
 #include "BufferObjs/VBO.h"
 #include "BufferObjs/EBO.h"
-#include "Window.h"
 #include "Textures/Texture.h"
 
-class Window;
+struct AppSettings
+{
+
+};
 
 class App
 {
 private:
-    bool initialized;
-    // We make a pointer to imgui, since (in App.cpp) we Member initialize window
-    // with nullptr first and then imgui -> therefore imgui can't initialize window
-    // Can't pass nullptr to a non-pointer initialization
     std::unique_ptr<Window> window;
     std::unique_ptr<ImGuiHandler> imgui;
-    Settings settings;  // App owns the settings/state
-    UI ui;              // UI is presentation-only, receives settings reference
+    UI ui;
+    bool initialized;
+
+    // Rendering resources
     std::unique_ptr<Shader> shader;
+    std::unique_ptr<Texture> texture1;
     std::unique_ptr<VAO> VAO1;
     std::unique_ptr<VBO> VBO1;
     std::unique_ptr<EBO> EBO1;
-    std::unique_ptr<Texture> texture1;
-    std::unique_ptr<Texture> texture2;
 
+    // ImGui Settings
+    Settings settings;
+
+    // Initialization methogs
+    bool initWindow();
+    bool initOpenGL();
+    bool initImGui();
+    bool initShaders();
+    bool initTextures();
+    bool initGeometry();
+
+    // Rendering methods
+    void setupShaderUniforms();
+    void render();
+    void renderUI();
+    void Clear();
+
+    // Input
     void processInput();
 
 public:
@@ -48,5 +61,4 @@ public:
 
     void run();
     bool isValid() const;
-    static void Clear() ;
 };
