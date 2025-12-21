@@ -50,8 +50,6 @@ if(APPLE)
     set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glad/mac")
 elseif(WIN32)
     set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glad/windows")
-elseif(UNIX AND NOT APPLE)
-    set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glad/linux")
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()
@@ -87,7 +85,6 @@ endif()
 
 # ImGui
 set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/imgui)
-
 
 add_library(imgui STATIC
         ${IMGUI_DIR}/imgui.cpp

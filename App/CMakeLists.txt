@@ -30,12 +30,14 @@ add_executable(${PROJECT_NAME}
         src/Window.cpp
         include/Window.h
         include/utils/Debug.h
- "include/utils/Debug.h" )
+ "include/utils/Debug.h"
+        include/utils/stb_image_impl.h)
 
 # Include your own header directory
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/external  # For stb_image/stb_image.h
         imgui
 )
 
