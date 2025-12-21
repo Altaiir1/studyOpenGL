@@ -15,6 +15,7 @@
 #include "BufferObjs/VBO.h"
 #include "BufferObjs/EBO.h"
 #include "Window.h"
+#include "Textures/Texture.h"
 
 class Window;
 
@@ -33,7 +34,8 @@ private:
     std::unique_ptr<VAO> VAO1;
     std::unique_ptr<VBO> VBO1;
     std::unique_ptr<EBO> EBO1;
-    unsigned int texture = 0;
+    std::unique_ptr<Texture> texture1;
+    std::unique_ptr<Texture> texture2;
 
     void processInput();
 

@@ -45,27 +45,8 @@ App::App() : initialized(false), imgui(nullptr)
 	}
 
 	// TEXTURES
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load("resources/textures/container.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture: " << stbi_failure_reason() << '\n';
-	}
-
-	stbi_image_free(data);
+	texture1 = std::make_unique<Texture>("resources/textures/container.jpg");
+	texture2 = std::make_unique<Texture>("resources/textures/wall.jpg");
 
 	// Vertices
 	float vertices[] = {
@@ -122,6 +103,8 @@ void App::run()
 	shader->Activate();
 	GLCall(glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0));
 	shader->setInt("texture1", 0);
+	GLCall(glUniform1i(glGetUniformLocation(shader->ID, "texture2"), 0));
+	shader->setInt("texture2", 0);
 
 	std::cout << "All checks passed, entering render loop\n" << '\n';
 
@@ -135,8 +118,8 @@ void App::run()
 
 		VAO1->Bind();
 		// GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
+		texture1->Activate(GL_TEXTURE0);
+		texture2->Activate(GL_TEXTURE1);
 		glBindVertexArray(VAO1->ID);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

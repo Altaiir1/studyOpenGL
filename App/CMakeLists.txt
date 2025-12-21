@@ -30,7 +30,9 @@ add_executable(${PROJECT_NAME}
         src/Window.cpp
         include/Window.h
         include/utils/Debug.h
-        src/utils/stb_image_impl.cpp)
+        src/utils/stb_image_impl.cpp
+        src/Textures/Texture.cpp
+        include/Textures/Texture.h)
 
 # Include your own header directory
 target_include_directories(${PROJECT_NAME}
