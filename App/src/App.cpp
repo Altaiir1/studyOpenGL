@@ -1,6 +1,9 @@
 #include "App.h"
 #include "utils/Debug.h"
 #include "stb_image/stb_image.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 
@@ -8,12 +11,18 @@ App::App() : initialized(false), imgui(nullptr)
 {
 	std::cout << "Initializing App...\n\n";
 
-	if (!initWindow()) return;
-	if (!initOpenGL()) return;
-	if (!initImGui()) return;
-	if (!initShaders()) return;
-	if (!initTextures()) return;
-	if (!initGeometry()) return;
+	if (!initWindow())
+		return;
+	if (!initOpenGL())
+		return;
+	if (!initImGui())
+		return;
+	if (!initShaders())
+		return;
+	if (!initTextures())
+		return;
+	if (!initGeometry())
+		return;
 
 	initialized = true;
 	std::cout << "Initialization complete!\n\n";
@@ -42,6 +51,13 @@ void App::run()
 
 		render();
 		renderUI();
+
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		unsigned int transformLoc = glGetUniformLocation(shader->ID, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 		window->swapBuffers();
 		window->pollEvents();
@@ -89,7 +105,8 @@ bool App::initShaders()
 		shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
 		std::cout << "Shader loaded successfully\n\n";
 		return true;
-	} catch (const std::exception& e)
+	}
+	catch (const std::exception &e)
 	{
 		std::cerr << "Failed to load shader: " << e.what() << '\n';
 		return false;
@@ -102,11 +119,11 @@ bool App::initTextures()
 
 	try
 	{
-		texture1 = std::make_unique<Texture>("resources/textures/container.jpg");
-		texture2 = std::make_unique<Texture>("resources/textures/awesomeface.png");
+		texture1 = std::make_unique<Texture>("resources/textures/awesomeface.png");
 		std::cout << "Texture loaded successfully\n\n";
 		return true;
-	} catch (const std::exception& e)
+	}
+	catch (const std::exception &e)
 	{
 		std::cerr << "Failed to load texture: " << e.what() << '\n';
 		return false;
@@ -120,15 +137,15 @@ bool App::initGeometry()
 	// Vertex data with positions, colors and textures coordinates
 	float vertices[] = {
 		// positions          // colors           // texture coords
-		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-	   -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-	   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
-   };
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,	  // top right
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f	  // top left
+	};
 
 	unsigned int indices[] = {
-		0, 1, 3,  // first triangle
-		1, 2, 3   // second triangle
+		0, 1, 3, // first triangle
+		1, 2, 3	 // second triangle
 	};
 
 	// Create and configure VAO
@@ -141,8 +158,7 @@ bool App::initGeometry()
 
 	// Configure vertex attributes
 	VAO1->LinkVBO(*VBO1, 0, 3, 8 * sizeof(float), 0 * sizeof(float));
-	VAO1->LinkVBO(*VBO1, 1, 3, 8 * sizeof(float), 3 * sizeof(float));
-	VAO1->LinkVBO(*VBO1, 2, 2, 8 * sizeof(float), 6 * sizeof(float));
+	VAO1->LinkVBO(*VBO1, 1, 2, 8 * sizeof(float), 6 * sizeof(float));
 
 	// Cleanup
 	VBO1->Unbind();
@@ -150,14 +166,12 @@ bool App::initGeometry()
 
 	std::cout << "Geometry setup complete\n";
 	return true;
-
 }
 
 void App::setupShaderUniforms()
 {
 	shader->Activate();
 	shader->setInt("texture1", 0);
-	shader->setInt("texture2", 1);
 }
 
 void App::render()
@@ -166,7 +180,6 @@ void App::render()
 
 	// Bind textures to texture units
 	texture1->Activate(GL_TEXTURE0);
-	texture2->Activate(GL_TEXTURE1);
 
 	// Draw geometry
 	VAO1->Bind();
@@ -187,7 +200,8 @@ bool App::isValid() const
 	return initialized;
 }
 
-void App::Clear() {
+void App::Clear()
+{
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
