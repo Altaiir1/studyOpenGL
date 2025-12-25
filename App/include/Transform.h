@@ -7,11 +7,20 @@
 class Transform
 {
 private:
-    float positionX{}, positionY {};
-    float rotationX{}, rotationY{};
-    float scaleX{}, scaleY{};
+    glm::vec3 m_Position;
+    glm::vec3 m_Rotation;
+    glm::vec3 m_Scale;
 
 public:
     Transform();
     ~Transform();
+
+    void setPosition(glm::vec3 position);
+    glm::vec3 getPosition() const;
+
+    void setRotation(glm::vec3 rotation);
+    glm::vec3 getRotation() const;
+
+    void setScale(glm::vec3 scale);
+    glm::vec3 getScale() const;
 };
