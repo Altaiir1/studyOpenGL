@@ -5,15 +5,16 @@ class Settings;
 class UI
 {
 public:
-    void render(Settings& settings);
+	void render(Settings& settings);
 
 private:
-    void beginWindow(const char* title);
-    void endWindow();
+	void beginWindow(const char* title);
+	void endWindow();
 
-    void renderSettings(Settings& settings);
-    // void renderTriangleColor(Settings& settings);
-    void windowColor(Settings& settings);
+	void renderSettings(Settings& settings);
+	// void renderTriangleColor(Settings& settings);
+	void windowColor(Settings& settings);
+	void autoRotate(Settings& settings);
 
-    void textTool();
+	void textTool();
 };

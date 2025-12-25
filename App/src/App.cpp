@@ -54,7 +54,11 @@ void App::run()
 
 	Transform transform;
 	transform.setPosition(glm::vec3(0.5f, -0.5f, 0.0f));
-	transform.setAutoRotate(true);
+
+	// TODO: if possible, fix/abstract autoRotate definition and such from app to UI
+	transform.setAutoRotate(settings.m_AutoRotate);
+	bool prevAutoRotate = settings.m_AutoRotate;
+
 	transform.setSpeed(glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate on Z
 
 	while (!window->shouldClose())
@@ -67,6 +71,12 @@ void App::run()
 
 		render();
 		renderUI();
+
+		if (prevAutoRotate != settings.m_AutoRotate)
+		{
+			prevAutoRotate = settings.m_AutoRotate;
+			transform.setAutoRotate(prevAutoRotate);
+		}
 
 		transform.update(deltaTime);
 		glm::mat4 trans = transform.getMatrix();
@@ -121,7 +131,7 @@ bool App::initShaders()
 		std::cout << "Shader loaded successfully\n\n";
 		return true;
 	}
-	catch (const std::exception &e)
+	catch (const std::exception& e)
 	{
 		std::cerr << "Failed to load shader: " << e.what() << '\n';
 		return false;
@@ -138,7 +148,7 @@ bool App::initTextures()
 		std::cout << "Texture loaded successfully\n\n";
 		return true;
 	}
-	catch (const std::exception &e)
+	catch (const std::exception& e)
 	{
 		std::cerr << "Failed to load texture: " << e.what() << '\n';
 		return false;
