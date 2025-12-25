@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Transform.h"
 #include "utils/Debug.h"
 #include "stb_image/stb_image.h"
 #include <glm/glm.hpp>
@@ -45,16 +46,27 @@ void App::run()
 
 	setupShaderUniforms();
 
+	float lastFrameTime = 0.0f;
+	float deltaTime = 0.0f;
+
 	while (!window->shouldClose())
 	{
+		auto currentTime = static_cast<float>(glfwGetTime());
+		deltaTime = currentTime - lastFrameTime;
+		lastFrameTime = currentTime;
+
 		processInput();
 
 		render();
 		renderUI();
 
-		glm::mat4 trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		Transform transform;
+		transform.setPosition(glm::vec3(0.5f, -0.5f, 0.0f));
+		transform.setAutoRotate(true);
+		transform.setSpeed(glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate on Z
+
+		transform.update(deltaTime);
+		glm::mat4 trans = transform.getMatrix();
 
 		unsigned int transformLoc = glGetUniformLocation(shader->ID, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
