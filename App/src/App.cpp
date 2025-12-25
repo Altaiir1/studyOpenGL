@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+// TODO: Refactor App since it is currently too dense in here...
+
 App::App() : imgui(nullptr), initialized(false)
 {
 	std::cout << "Initializing App...\n\n";

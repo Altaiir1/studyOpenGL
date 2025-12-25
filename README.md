@@ -24,6 +24,7 @@ development.
 - [ ] Implement Geeometry class/abstraction
 - [ ] Implement Renderer
 - [ ] Implement Light shader
+- ...
 
 ---
 
