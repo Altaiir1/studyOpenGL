@@ -32,7 +32,9 @@ add_executable(${PROJECT_NAME}
         include/utils/Debug.h
         src/utils/stb_image_impl.cpp
         src/Textures/Texture.cpp
-        include/Textures/Texture.h)
+        include/Textures/Texture.h
+        src/Transform.cpp
+        include/Transform.h)
 
 # Include your own header directory
 target_include_directories(${PROJECT_NAME}

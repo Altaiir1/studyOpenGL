@@ -20,6 +20,11 @@ development.
 - [x] Add Timer utility to Measure duration of the application.
   - [ ] (future) Expand Timer.h to track multiple things (Textures/Assets loading etc.) & specific places
   - [ ] (future) Maybe implement Timer and (if possible) some options inside imgui to toggle on & off
+- [ ] Abstract App. Currently a mess
+- [ ] Implement Geeometry class/abstraction
+- [ ] Implement Renderer
+- [ ] Implement Light shader
+- ...
 
 ---
 
@@ -29,5 +34,7 @@ development.
 
 This is the first Timestamp. Here i've created an simple Triangle including ImGui. I've decided to implement ImGui
 early on so i can make use of it early and possible play with it around for later use..
+
+![First Image](Docs/Transformation-in-OpenGL.gif)
 
 ---

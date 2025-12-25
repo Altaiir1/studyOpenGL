@@ -26,7 +26,7 @@ private:
     bool initialized;
 
     // Rendering resources
-    std::unique_ptr<Shader> shader;
+    std::unique_ptr<Shader> textureShader;
     std::unique_ptr<Texture> texture1;
     std::unique_ptr<Texture> texture2;
     std::unique_ptr<VAO> VAO1;
