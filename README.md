@@ -20,6 +20,7 @@ development.
 - [x] Add Timer utility to Measure duration of the application.
   - [ ] (future) Expand Timer.h to track multiple things (Textures/Assets loading etc.) & specific places
   - [ ] (future) Maybe implement Timer and (if possible) some options inside imgui to toggle on & off
+- [ ] Connect Transformation options with ImGui
 - [ ] Abstract App. Currently a mess
 - [ ] Implement Geeometry class/abstraction
 - [ ] Implement Renderer
@@ -35,6 +36,11 @@ development.
 This is the first Timestamp. Here i've created an simple Triangle including ImGui. I've decided to implement ImGui
 early on so i can make use of it early and possible play with it around for later use..
 
-![First Image](Docs/Transformation-in-OpenGL.gif)
+![Transformation](Docs/Transformation-in-OpenGL.gif)
+
+Added now a Transformation abstraction and a little Window color feature or 
+implementation in ImGui. Currently you can set auto rotate on or off, axis 
+rotation option and so on. I'll probaby extend transformation class if 
+needed especially connect it with ImGui
 
 ---

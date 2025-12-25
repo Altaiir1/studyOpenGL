@@ -1,5 +1,7 @@
 #include "Transform.h"
 
+// TODO: Connect Transformation options with ImGui
+
 Transform::Transform()
 {
     m_Position = glm::vec3(0.0f);
@@ -8,6 +10,8 @@ Transform::Transform()
     m_AutoRotate = false;
     m_Speed = glm::vec3(0.0f);
 }
+
+// TODO: Forgot destructor content...
 
 Transform::~Transform()
 {
