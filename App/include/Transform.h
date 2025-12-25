@@ -23,4 +23,6 @@ public:
 
     void setScale(glm::vec3 scale);
     glm::vec3 getScale() const;
+
+    glm::mat4 getMatrix() const;
 };

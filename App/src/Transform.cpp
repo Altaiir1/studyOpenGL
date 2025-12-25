@@ -40,3 +40,22 @@ glm::vec3 Transform::getScale() const
 {
     return m_Scale;
 }
+
+glm::mat4 Transform::getMatrix() const
+{
+    // Identity Matrix
+    glm::mat4 matrix = glm::mat4(1.0f);
+
+    // Translate
+    matrix = glm::translate(matrix, m_Position);
+
+    // Rotation
+    matrix = glm::rotate(matrix, m_Rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    matrix = glm::rotate(matrix, m_Rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+    matrix = glm::rotate(matrix, m_Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+
+    // Scale
+    matrix = glm::scale(matrix, m_Scale);
+
+    return matrix;
+}
