@@ -5,6 +5,8 @@ Transform::Transform()
     m_Position = glm::vec3(0.0f);
     m_Rotation = glm::vec3(0.0f);
     m_Scale = glm::vec3(1.0f);
+    m_AutoRotate = false;
+    m_Speed = glm::vec3(0.0f);
 }
 
 Transform::~Transform()
@@ -58,4 +60,30 @@ glm::mat4 Transform::getMatrix() const
     matrix = glm::scale(matrix, m_Scale);
 
     return matrix;
+}
+
+void Transform::update(const float deltaTime)
+{
+    if (m_AutoRotate)
+        m_Rotation += m_Speed * deltaTime;
+}
+
+void Transform::setAutoRotate(const bool autoRotate)
+{
+    m_AutoRotate = autoRotate;
+}
+
+bool Transform::getAutoRotate() const
+{
+    return m_AutoRotate;
+}
+
+void Transform::setSpeed(const glm::vec3 speed)
+{
+    m_Speed = speed;
+}
+
+glm::vec3 Transform::getSpeed() const
+{
+    return m_Speed;
 }

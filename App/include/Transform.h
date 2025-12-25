@@ -11,6 +11,9 @@ private:
     glm::vec3 m_Rotation;
     glm::vec3 m_Scale;
 
+    glm::vec3 m_Speed;
+    bool m_AutoRotate;
+
 public:
     Transform();
     ~Transform();
@@ -25,4 +28,12 @@ public:
     glm::vec3 getScale() const;
 
     glm::mat4 getMatrix() const;
+
+    void update(float deltaTime);
+
+    void setAutoRotate(bool autoRotate);
+    bool getAutoRotate() const;
+
+    void setSpeed(glm::vec3 speed);
+    glm::vec3 getSpeed() const;
 };
