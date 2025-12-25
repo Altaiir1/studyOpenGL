@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Transform.h"
 #include "utils/Debug.h"
+#include "UI/Settings.h"
 #include "stb_image/stb_image.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,7 +9,7 @@
 
 #include <iostream>
 
-App::App() : initialized(false), imgui(nullptr)
+App::App() : imgui(nullptr), initialized(false)
 {
 	std::cout << "Initializing App...\n\n";
 
@@ -38,7 +39,7 @@ void App::run()
 {
 	std::cout << "Starting render loop...\n\n";
 
-	if (!shader)
+	if (!textureShader)
 	{
 		std::cerr << "Error: Shader is null, cannot render\n";
 		return;
@@ -51,8 +52,8 @@ void App::run()
 
 	Transform transform;
 	transform.setPosition(glm::vec3(0.5f, -0.5f, 0.0f));
-	transform.setAutoRotate(false);
-	transform.setSpeed(glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate on Z
+	transform.setAutoRotate(true);
+	transform.setSpeed(glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate on Z
 
 	while (!window->shouldClose())
 	{
@@ -68,7 +69,7 @@ void App::run()
 		transform.update(deltaTime);
 		glm::mat4 trans = transform.getMatrix();
 
-		unsigned int transformLoc = glGetUniformLocation(shader->ID, "transform");
+		unsigned int transformLoc = glGetUniformLocation(textureShader->ID, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 		window->swapBuffers();
@@ -114,7 +115,7 @@ bool App::initShaders()
 
 	try
 	{
-		shader = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
+		textureShader = std::make_unique<Shader>("shaders/textured.vert", "shaders/textured.frag");
 		std::cout << "Shader loaded successfully\n\n";
 		return true;
 	}
@@ -182,8 +183,8 @@ bool App::initGeometry()
 
 void App::setupShaderUniforms()
 {
-	shader->Activate();
-	shader->setInt("texture1", 0);
+	textureShader->Activate();
+	textureShader->setInt("texture1", 0);
 }
 
 void App::render()
@@ -214,7 +215,7 @@ bool App::isValid() const
 
 void App::Clear()
 {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(settings.windowColor[0], settings.windowColor[1], settings.windowColor[2], settings.windowColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
