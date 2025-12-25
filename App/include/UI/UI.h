@@ -12,7 +12,8 @@ private:
     void endWindow();
 
     void renderSettings(Settings& settings);
-    void renderTriangleColor(Settings& settings);
+    // void renderTriangleColor(Settings& settings);
+    void windowColor(Settings& settings);
 
     void textTool();
 };

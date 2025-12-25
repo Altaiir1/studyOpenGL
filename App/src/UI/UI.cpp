@@ -12,6 +12,8 @@ void UI::render(Settings& settings)
     renderSettings(settings);
     ImGui::Separator();
     textTool();
+    ImGui::Separator();
+    windowColor(settings);
     endWindow();
 
     /* beginWindow("Triangle");
@@ -40,6 +42,12 @@ void UI::renderSettings(Settings& settings)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void UI::windowColor(Settings &settings)
+{
+    ImGui::Text("Window Color");
+    ImGui::ColorEdit4("Color", settings.windowColor);
 }
 
 /*
