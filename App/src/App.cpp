@@ -49,6 +49,11 @@ void App::run()
 	float lastFrameTime = 0.0f;
 	float deltaTime = 0.0f;
 
+	Transform transform;
+	transform.setPosition(glm::vec3(0.5f, -0.5f, 0.0f));
+	transform.setAutoRotate(false);
+	transform.setSpeed(glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate on Z
+
 	while (!window->shouldClose())
 	{
 		auto currentTime = static_cast<float>(glfwGetTime());
@@ -59,11 +64,6 @@ void App::run()
 
 		render();
 		renderUI();
-
-		Transform transform;
-		transform.setPosition(glm::vec3(0.5f, -0.5f, 0.0f));
-		transform.setAutoRotate(true);
-		transform.setSpeed(glm::vec3(0.0f, 0.0f, 1.0f)); // Rotate on Z
 
 		transform.update(deltaTime);
 		glm::mat4 trans = transform.getMatrix();
