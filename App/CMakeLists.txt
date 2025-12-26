@@ -2,9 +2,6 @@
 # Sources / Headers
 # ============================================
 
-# Explicit is better than GLOB for templates, but if you prefer GLOB, keep it.
-# Here: keep your GLOB, but you can later switch to explicit lists.
-
 file(GLOB_RECURSE APP_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 )
@@ -16,7 +13,6 @@ file(GLOB_RECURSE APP_HEADERS
 # ============================================
 # Executable
 # ============================================
-# Use the same name as project() in the root CMakeLists.txt
 add_executable(${PROJECT_NAME}
     ${APP_SOURCES}
     ${APP_HEADERS}
@@ -47,7 +43,6 @@ target_include_directories(${PROJECT_NAME}
 # ============================================
 # Link dependencies
 # ============================================
-# glfw_target is defined in the root CMakeLists.txt (system or FetchContent)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         imgui
